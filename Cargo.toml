@@ -1,0 +1,22 @@
+[workspace.package]
+version = "0.0.1"
+edition = "2024"
+rust-version = "1.88.0"
+authors = ["Aleksandr Fedorov"]
+description = "Composable resource managenement for performance-critical tasks."
+readme = "README.md"
+documentation = "https://github.com/biomancy/substratum"
+homepage = "https://github.com/biomancy/substratum"
+repository = "https://github.com/biomancy/substratum"
+license = "MIT"
+categories = ["science", "algorithms"]
+
+[workspace]
+members = [
+    "workspace/vista"
+]
+resolver = "3"
+
+[workspace.dependencies]
+rayon = "1.11.0"
+thread_local = "1.1.9"

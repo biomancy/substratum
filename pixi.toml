@@ -1,0 +1,26 @@
+[workspace]
+channels = ["conda-forge"]
+name = "substratum"
+platforms = ["linux-64"]
+
+[environments]
+default = ["rust"]
+
+[feature.rust.dependencies]
+rust = "==1.90.0"               # .pixi/envs/default/bin
+rust-src = "==1.90.0"           # .pixi/envs/default/lib/rustlib/src/rust
+
+[feature.rust.tasks]
+fmt = "cargo fmt --all -- --check"
+check = "cargo check --all-features"
+clippy = "cargo clippy --all-features"
+test = "cargo test --all-features"
+ci = { depends-on = ["fmt", "check", "clippy", "test"] }
+upgrade = "cargo upgrade --incompatible allow && cargo update"
+
+[feature.rust.tasks.code2prompt]
+cmd = [
+    "code2prompt", "--full-directory-tree", "--sort", "name_asc",
+    "--exclude", "target", "--exclude", "Cargo.lock", "--exclude", "pixi.lock", "--exclude", "llm-context.md",
+    "-O", "llm-context.md", "."
+]
