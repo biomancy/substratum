@@ -20,7 +20,7 @@
 //! * **Fallible Access:** Cleanly handle access that might fail (e.g.,
 //!   indexing a `Vec`).
 //!
-//! ## 🏛️ Architecture
+//! ## Architecture
 //!
 //! * [`View`]: The fundamental trait for safe, immutable access.
 //! * [`ViewMut`]: The trait for safe, *mutable* access.
@@ -104,4 +104,4 @@ mod view;
 pub use error::ViewError;
 pub use ext::{UnsafeViewExt, UnsafeViewMutExt, ViewExt, ViewMutExt};
 pub use impls::{ArcRwLockView, ArcView};
-pub use view::{UnsafeView, UnsafeViewMut, View, ViewMut};
+pub use view::{UnsafeView, UnsafeViewMut, View, ViewBase, ViewMut};

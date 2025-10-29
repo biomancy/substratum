@@ -19,8 +19,9 @@ ci = { depends-on = ["fmt", "check", "clippy", "test"] }
 upgrade = "cargo upgrade --incompatible allow && cargo update"
 
 [feature.rust.tasks.code2prompt]
+args = [{ arg = "folder", default = "workspace" }]
 cmd = [
     "code2prompt", "--full-directory-tree", "--sort", "name_asc",
     "--exclude", "target", "--exclude", "Cargo.lock", "--exclude", "pixi.lock", "--exclude", "llm-context.md",
-    "-O", "llm-context.md", "."
+    "-O", "llm-context.md", "{{ folder }}"
 ]
