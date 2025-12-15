@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PIXI_VERSION: v0.57.0
-  RUST_VERSION: 1.87.0
+  PIXI_VERSION: v0.61.0
+  RUST_VERSION: 1.92.0
 
 jobs:
   ci:
@@ -32,6 +32,3 @@ jobs:
           activate-environment: true
       - name: CI checks
         run: pixi run ci
-
-# TODO: CD release to crates.io
-# TODO: ensure semantic versioning

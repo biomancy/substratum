@@ -7,8 +7,8 @@ platforms = ["linux-64"]
 default = ["rust"]
 
 [feature.rust.dependencies]
-rust = "==1.90.0"               # .pixi/envs/default/bin
-rust-src = "==1.90.0"           # .pixi/envs/default/lib/rustlib/src/rust
+rust = "==1.92.0"               # .pixi/envs/default/bin
+rust-src = "==1.92.0"           # .pixi/envs/default/lib/rustlib/src/rust
 
 [feature.rust.tasks]
 fmt = "cargo fmt --all -- --check"
