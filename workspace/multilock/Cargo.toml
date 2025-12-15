@@ -1,13 +1,19 @@
 [package]
-name = "vista"
+name = "multilock"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 authors.workspace = true
 description.workspace = true
-documentation.workspace = true
 readme.workspace = true
+documentation.workspace = true
 homepage.workspace = true
 repository.workspace = true
 license.workspace = true
 categories.workspace = true
+
+[dependencies]
+lock_api = { workspace = true, optional = true, default-features = false }
+
+[features]
+lock_api = ["dep:lock_api"]
