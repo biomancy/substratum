@@ -28,7 +28,7 @@ impl<'a> LockId<'a> {
 pub trait Unlock {
     /// Unlock a previously acquired lock.
     ///
-    /// # Safety:
+    /// # Safety
     ///
     /// Callers must ensure that the lock is currently held by the calling thread.
     /// Some lock implementations may exhibit undefined behavior if this is not the case.
