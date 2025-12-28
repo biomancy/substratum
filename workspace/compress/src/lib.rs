@@ -9,7 +9,7 @@
 //! compress data into a memory buffer, and then decompress it back to verify integrity.
 //!
 //! ```rust
-//! use compress::{adapter::BoxedSync, decode::DecodeReadIntoRead, encode::Encode, Format};
+//! use substratum_compress::{adapter::BoxedSync, decode::DecodeReadIntoRead, encode::Encode, Format};
 //! use std::io::{Read, Write};
 //!
 //! fn main() -> std::io::Result<()> {
@@ -19,9 +19,8 @@
 //!     // 1. Setup & Inference
 //!     // ----------------------------------------------------------------------
 //!     // Detect format from extension (e.g., "gz" -> Format::Gzip)
-//!     let format = Format::from_extension("gz", &[]);
-//!     assert_eq!(format, Some(Format::Gzip), "Should infer Gzip format");
-//!     let format = format.unwrap();
+//!     let format = Format::from_extension("gz", &[]).unwrap();
+//!     assert_eq!(format, Format::Gzip, "Should infer Gzip format");
 //!
 //!     // ----------------------------------------------------------------------
 //!     // 2. Encode (Write)

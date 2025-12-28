@@ -1,4 +1,5 @@
 use crate::{decode, encode};
+use std::io::{Error, ErrorKind, Result};
 use std::path::Path;
 
 const DEFLATE: &[&str] = &[];
@@ -18,32 +19,36 @@ pub enum Format {
 }
 
 impl Format {
-    pub fn from_extension(ext: &str, uncompressed_exts: &[&str]) -> Option<Self> {
+    pub fn from_extension(ext: &str, uncompressed_exts: &[&str]) -> Result<Self> {
         match ext {
             // Empty extension can't be used to infer format
-            ext if ext.is_empty() => None,
+            ext if ext.is_empty() => Err(Error::new(ErrorKind::InvalidInput, "Can't infer format from empty extension")),
 
             // Uncompressed files
-            ext if uncompressed_exts.contains(&ext) => Some(Self::Uncompressed),
+            ext if uncompressed_exts.contains(&ext) => Ok(Self::Uncompressed),
 
             // DEFLATE compressed files
             #[cfg(any(feature = "decode-deflate", feature = "encode-deflate"))]
-            ext if DEFLATE.contains(&ext) => Some(Self::Deflate),
+            ext if DEFLATE.contains(&ext) => Ok(Self::Deflate),
 
             // GZIP compressed files
             #[cfg(any(feature = "decode-gzip", feature = "encode-gzip"))]
-            ext if GZIP.contains(&ext) => Some(Self::Gzip),
+            ext if GZIP.contains(&ext) => Ok(Self::Gzip),
 
             // BGZF compressed files
             #[cfg(any(feature = "decode-bgzf", feature = "encode-bgzf"))]
-            ext if BGZF.contains(&ext) => Some(Self::Bgzf),
+            ext if BGZF.contains(&ext) => Ok(Self::Bgzf),
 
-            _ => None,
+            _ => Err(Error::new(
+                ErrorKind::InvalidInput, format!("Unknown format '{}'", ext),
+            )),
         }
     }
 
-    pub fn from_path(path: impl AsRef<Path>, uncompressed_exts: &[&str]) -> Option<Self> {
-        let path = path.as_ref().extension()?.to_str()?;
+    pub fn from_path(path: impl AsRef<Path>, uncompressed_exts: &[&str]) -> Result<Self> {
+        let path = path.as_ref().extension()
+            .and_then(|ext| ext.to_str())
+            .unwrap_or("");
         Self::from_extension(path, uncompressed_exts)
     }
 
@@ -81,25 +86,25 @@ mod tests {
 
         // Uncompressed extensions
         assert_eq!(
-            Format::from_extension("txt", uncompressed_exts),
-            Some(Format::Uncompressed)
+            Format::from_extension("txt", uncompressed_exts).unwrap(),
+            Format::Uncompressed
         );
 
         // Known compressed extensions
         #[cfg(feature = "decode-gzip")]
         assert_eq!(
-            Format::from_extension("gz", uncompressed_exts),
-            Some(Format::Gzip)
+            Format::from_extension("gz", uncompressed_exts).unwrap(),
+            Format::Gzip
         );
 
         #[cfg(feature = "decode-bgzf")]
         assert_eq!(
-            Format::from_extension("bgzf", uncompressed_exts),
-            Some(Format::Bgzf)
+            Format::from_extension("bgzf", uncompressed_exts).unwrap(),
+            Format::Bgzf
         );
 
         // Unknown or empty extensions
-        assert_eq!(Format::from_extension("unknown", uncompressed_exts), None);
-        assert_eq!(Format::from_extension("", uncompressed_exts), None);
+        assert!(Format::from_extension("unknown", uncompressed_exts).is_err());
+        assert!(Format::from_extension("", uncompressed_exts).is_err());
     }
 }
