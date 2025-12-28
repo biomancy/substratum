@@ -1,6 +1,12 @@
 use crate::{decode, encode};
 use std::io::{BufRead, Error, Read};
 
+/// Adapter that type-erases I/O types into boxed trait objects with `Send + Sync` bounds.
+///
+/// `BoxedSync` is used by the compression/decompression adapters to wrap concrete
+/// `Read`, `BufRead`, and `Write` implementations into `Box<dyn ... + Send + Sync + 'a>`
+/// so they can be passed around as thread-safe, type-erased handles in the public API
+/// and examples.
 pub struct BoxedSync;
 
 impl<'a, In> decode::AdaptRead<'a, In> for BoxedSync
