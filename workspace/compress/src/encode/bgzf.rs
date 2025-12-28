@@ -48,7 +48,9 @@ where
         let level =
             bgzf::io::writer::CompressionLevel::new(self.deflate().level()).unwrap();
         if let Some(_threads) = self.threads() {
-            Err(Error::other("Multithreaded BGZF is not supported"))
+            Err(Error::other(
+                "Multithreaded BGZF encoding is not yet implemented. Please use single-threaded mode by leaving threads as None.",
+            ))
             // let writer = bgzf::io::multithreaded_writer::Builder::default()
             //     .set_compression_level(level)
             //     .set_worker_count(threads)
