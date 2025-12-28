@@ -22,7 +22,10 @@ impl Format {
     pub fn from_extension(ext: &str, uncompressed_exts: &[&str]) -> Result<Self> {
         match ext {
             // Empty extension can't be used to infer format
-            ext if ext.is_empty() => Err(Error::new(ErrorKind::InvalidInput, "Can't infer format from empty extension")),
+            ext if ext.is_empty() => Err(Error::new(
+                ErrorKind::InvalidInput,
+                "Can't infer format from empty extension",
+            )),
 
             // Uncompressed files
             ext if uncompressed_exts.contains(&ext) => Ok(Self::Uncompressed),
@@ -40,13 +43,16 @@ impl Format {
             ext if BGZF.contains(&ext) => Ok(Self::Bgzf),
 
             _ => Err(Error::new(
-                ErrorKind::InvalidInput, format!("Unknown format '{}'", ext),
+                ErrorKind::InvalidInput,
+                format!("Unknown format '{}'", ext),
             )),
         }
     }
 
     pub fn from_path(path: impl AsRef<Path>, uncompressed_exts: &[&str]) -> Result<Self> {
-        let path = path.as_ref().extension()
+        let path = path
+            .as_ref()
+            .extension()
             .and_then(|ext| ext.to_str())
             .unwrap_or("");
         Self::from_extension(path, uncompressed_exts)

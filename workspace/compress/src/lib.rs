@@ -70,4 +70,6 @@ pub mod decode;
 pub mod encode;
 mod format;
 
+pub use decode::Decoder;
+pub use encode::Encoder;
 pub use format::Format;
