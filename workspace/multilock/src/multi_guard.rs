@@ -161,7 +161,7 @@ impl<'a> MultiGuard<'a> {
             .get(&lock)
             .ok_or(MultiLockError::LockNotHeld)
             .and_then(|cell| cell.try_borrow_mut().map_err(MultiLockError::from))
-            .map(move |x| WriteLockProof::WithBorrow(x))
+            .map(WriteLockProof::WithBorrow)
     }
 }
 
