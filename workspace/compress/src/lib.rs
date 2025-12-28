@@ -66,8 +66,8 @@
 //! }
 //! ```
 
-pub mod decode;
 pub mod adapter;
+pub mod decode;
 pub mod encode;
 mod format;
 

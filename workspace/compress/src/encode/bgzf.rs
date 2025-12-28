@@ -7,7 +7,6 @@ use std::num::NonZeroUsize;
 
 use super::deflate::Deflate;
 
-
 #[cfg_attr(feature = "bitcode", derive(::bitcode::Encode, ::bitcode::Decode))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Bgzf {
@@ -45,8 +44,7 @@ where
     A: AdaptWrite<'a, bgzf::io::Writer<W>>,
 {
     fn encode(&self, writer: W, adapter: A) -> Result<A::Write<'a>, Error> {
-        let level =
-            bgzf::io::writer::CompressionLevel::new(self.deflate().level()).unwrap();
+        let level = bgzf::io::writer::CompressionLevel::new(self.deflate().level()).unwrap();
         if let Some(_threads) = self.threads() {
             Err(Error::other(
                 "Multithreaded BGZF encoding is not yet implemented. Please use single-threaded mode by leaving threads as None.",

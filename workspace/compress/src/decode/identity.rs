@@ -1,5 +1,7 @@
 use super::adapter::{AdaptBufRead, AdaptRead, Adapter};
-use super::decode::{DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead};
+use super::decode::{
+    DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead,
+};
 use std::io::{BufRead, BufReader, Error, Read};
 use std::num::NonZeroUsize;
 
@@ -11,7 +13,7 @@ pub struct Identity {
 
 impl Identity {
     pub const DEFAULT: Identity = Identity {
-        out_bufsize: NonZeroUsize::new(8 * 1024).unwrap()
+        out_bufsize: NonZeroUsize::new(8 * 1024).unwrap(),
     };
 
     pub fn new(out_bufsize: NonZeroUsize) -> Self {
@@ -63,4 +65,3 @@ where
         adapter.wrap(reader)
     }
 }
-

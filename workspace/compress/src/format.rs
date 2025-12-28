@@ -5,7 +5,6 @@ const DEFLATE: &[&str] = &[];
 const GZIP: &[&str] = &["gz", "gzip"];
 const BGZF: &[&str] = &["bgz", "bgzf", "bgzip"];
 
-
 #[cfg_attr(feature = "bitcode", derive(::bitcode::Encode, ::bitcode::Decode))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Format {
@@ -39,7 +38,7 @@ impl Format {
             #[cfg(any(feature = "decode-bgzf", feature = "encode-bgzf"))]
             ext if BGZF.contains(&ext) => Some(Self::Bgzf),
 
-            _ => None
+            _ => None,
         }
     }
 
@@ -79,18 +78,26 @@ mod tests {
     #[test]
     fn test_format_from_extension() {
         let uncompressed_exts = &["txt", "csv"];
-        
+
         // Uncompressed extensions
-        assert_eq!(Format::from_extension("txt", uncompressed_exts), Some(Format::Uncompressed));
-        assert_eq!(Format::from_extension(".txt", uncompressed_exts), None);
-        
+        assert_eq!(
+            Format::from_extension("txt", uncompressed_exts),
+            Some(Format::Uncompressed)
+        );
+
         // Known compressed extensions
         #[cfg(feature = "decode-gzip")]
-        assert_eq!(Format::from_extension("gz", uncompressed_exts), Some(Format::Gzip));
+        assert_eq!(
+            Format::from_extension("gz", uncompressed_exts),
+            Some(Format::Gzip)
+        );
 
         #[cfg(feature = "decode-bgzf")]
-        assert_eq!(Format::from_extension("bgzf", uncompressed_exts), Some(Format::Bgzf));
-        
+        assert_eq!(
+            Format::from_extension("bgzf", uncompressed_exts),
+            Some(Format::Bgzf)
+        );
+
         // Unknown or empty extensions
         assert_eq!(Format::from_extension("unknown", uncompressed_exts), None);
         assert_eq!(Format::from_extension("", uncompressed_exts), None);

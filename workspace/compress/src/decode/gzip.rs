@@ -1,5 +1,7 @@
-use super::decode::{DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead};
 use super::adapter::{AdaptBufRead, AdaptRead, Adapter};
+use super::decode::{
+    DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead,
+};
 use std::io::{BufRead, BufReader, Error, Read};
 use std::num::NonZeroUsize;
 
@@ -17,7 +19,10 @@ impl Gzip {
     };
 
     pub fn new(out_bufsize: NonZeroUsize, read_multi: bool) -> Self {
-        Self { out_bufsize, read_multi }
+        Self {
+            out_bufsize,
+            read_multi,
+        }
     }
 
     pub fn out_bufsize(&self) -> NonZeroUsize {
@@ -34,7 +39,6 @@ impl Default for Gzip {
         Self::DEFAULT
     }
 }
-
 
 impl<'a, R: Read + 'a, A: Adapter> DecodeReadIntoRead<'a, R, A> for Gzip
 where

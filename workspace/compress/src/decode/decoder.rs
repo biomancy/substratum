@@ -1,5 +1,7 @@
 use super::adapter::Adapter;
-use super::decode::{DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead};
+use super::decode::{
+    DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead,
+};
 use std::io::{BufRead, Error, Read};
 
 #[cfg_attr(feature = "bitcode", derive(::bitcode::Encode, ::bitcode::Decode))]
@@ -54,6 +56,21 @@ macro_rules! impl_decompression_trait {
 }
 
 impl_decompression_trait!(Read, Read, DecodeReadIntoRead, decode_read_into_read);
-impl_decompression_trait!(Read, BufRead, DecodeReadIntoBufRead, decode_read_into_bufread);
-impl_decompression_trait!(BufRead, Read, DecodeBufReadIntoRead, decode_bufread_into_read);
-impl_decompression_trait!(BufRead, BufRead, DecodeBufReadIntoBufRead, decode_bufread_into_bufread);
+impl_decompression_trait!(
+    Read,
+    BufRead,
+    DecodeReadIntoBufRead,
+    decode_read_into_bufread
+);
+impl_decompression_trait!(
+    BufRead,
+    Read,
+    DecodeBufReadIntoRead,
+    decode_bufread_into_read
+);
+impl_decompression_trait!(
+    BufRead,
+    BufRead,
+    DecodeBufReadIntoBufRead,
+    decode_bufread_into_bufread
+);

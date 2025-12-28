@@ -1,5 +1,7 @@
 use super::adapter::{AdaptBufRead, AdaptRead, Adapter};
-use super::decode::{DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead};
+use super::decode::{
+    DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead,
+};
 use std::io::{BufRead, BufReader, Error, Read};
 use std::num::NonZeroUsize;
 

@@ -1,9 +1,8 @@
 use super::adapter::{AdaptWrite, Adapter};
-use super::encode::Encode;
 use super::deflate::Deflate;
+use super::encode::Encode;
 use flate2::Compression;
 use std::io::{Error, Write};
-
 
 #[cfg_attr(feature = "bitcode", derive(::bitcode::Encode, ::bitcode::Decode))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -13,7 +12,7 @@ pub struct Gzip {
 
 impl Gzip {
     pub const DEFAULT: Gzip = Gzip {
-        deflate: Deflate::DEFAULT
+        deflate: Deflate::DEFAULT,
     };
 
     pub fn new(deflate: Deflate) -> Self {
@@ -36,8 +35,9 @@ where
     A: AdaptWrite<'a, flate2::write::GzEncoder<W>>,
 {
     fn encode(&self, writer: W, adapter: A) -> Result<A::Write<'a>, Error> {
-        adapter.wrap(
-            flate2::write::GzEncoder::new(writer, Compression::new(self.deflate.level() as u32))
-        )
+        adapter.wrap(flate2::write::GzEncoder::new(
+            writer,
+            Compression::new(self.deflate.level() as u32),
+        ))
     }
 }

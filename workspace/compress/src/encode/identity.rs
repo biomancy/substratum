@@ -2,7 +2,6 @@ use super::adapter::{AdaptWrite, Adapter};
 use super::encode::Encode;
 use std::io::{Error, Write};
 
-
 #[cfg_attr(feature = "bitcode", derive(::bitcode::Encode, ::bitcode::Decode))]
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Identity {}

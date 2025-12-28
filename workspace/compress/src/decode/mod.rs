@@ -3,7 +3,9 @@ pub use adapter::{AdaptBufRead, AdaptRead, Adapter};
 
 #[allow(clippy::module_inception)]
 mod decode;
-pub use decode::{DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead};
+pub use decode::{
+    DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead,
+};
 
 mod identity;
 pub use identity::Identity;
