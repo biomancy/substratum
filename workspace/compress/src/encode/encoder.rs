@@ -1,6 +1,7 @@
 use super::adapter::Adapter;
 use super::encode::Encode;
 use std::io::{Error, Write};
+use std::path::Path;
 
 #[cfg_attr(feature = "bitcode", derive(::bitcode::Encode, ::bitcode::Decode))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -46,5 +47,14 @@ where
             #[cfg(feature = "encode-bgzf")]
             Encoder::Bgzf(codec) => codec.encode(writer, adapter),
         }
+    }
+}
+
+impl Encoder {
+    pub fn from_extension(ext: &str, uncompressed_exts: &[&str]) -> std::io::Result<Self> {
+        crate::Format::from_extension(ext, uncompressed_exts).map(|x| x.encoder())
+    }
+    pub fn from_path(path: impl AsRef<Path>, uncompressed_exts: &[&str]) -> std::io::Result<Self> {
+        crate::Format::from_path(path, uncompressed_exts).map(|x| x.encoder())
     }
 }

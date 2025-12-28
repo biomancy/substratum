@@ -3,6 +3,7 @@ use super::decode::{
     DecodeBufReadIntoBufRead, DecodeBufReadIntoRead, DecodeReadIntoBufRead, DecodeReadIntoRead,
 };
 use std::io::{BufRead, Error, Read};
+use std::path::Path;
 
 #[cfg_attr(feature = "bitcode", derive(::bitcode::Encode, ::bitcode::Decode))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -74,3 +75,12 @@ impl_decompression_trait!(
     DecodeBufReadIntoBufRead,
     decode_bufread_into_bufread
 );
+
+impl Decoder {
+    pub fn from_extension(ext: &str, uncompressed_exts: &[&str]) -> std::io::Result<Self> {
+        crate::Format::from_extension(ext, uncompressed_exts).map(|x| x.decoder())
+    }
+    pub fn from_path(path: impl AsRef<Path>, uncompressed_exts: &[&str]) -> std::io::Result<Self> {
+        crate::Format::from_path(path, uncompressed_exts).map(|x| x.decoder())
+    }
+}
