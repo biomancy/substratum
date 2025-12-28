@@ -43,7 +43,7 @@
 //!     }
 //!
 //!     // Verify something was written (Gzip header + body + footer)
-//!     assert!(buffer.len() > 0);
+//!     assert!(!buffer.is_empty());
 //!
 //!     // ----------------------------------------------------------------------
 //!     // 3. Decode (Read)
