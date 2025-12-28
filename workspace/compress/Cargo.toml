@@ -1,0 +1,51 @@
+[package]
+name = "compress"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description.workspace = true
+readme.workspace = true
+documentation.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+categories.workspace = true
+
+[dependencies]
+flate2 = { workspace = true, optional = true }
+noodles-bgzf = { workspace = true, optional = true }
+bitcode = { workspace = true, optional = true }
+
+[features]
+
+#################################### Low level features ####################################
+# These features are expected to be used by other libraries or in the library code itself
+# to fine-tune which algorithms are included.
+
+# Decompression algorithms
+decode-deflate = ["dep:flate2"]
+decode-gzip = ["dep:flate2"]
+decode-bgzf = ["dep:noodles-bgzf"]
+
+# Compression algorithms
+encode-deflate = ["dep:flate2"]
+encode-gzip = ["dep:flate2"]
+encode-bgzf = ["dep:noodles-bgzf"]
+
+#################################### High level features ####################################
+# These features are expected to be used by end users.
+
+# Compression formats
+deflate = ["encode-deflate", "decode-deflate"]
+gzip = ["encode-gzip", "decode-gzip"]
+bgzf = ["encode-bgzf", "decode-bgzf"]
+
+# All supported compression formats
+all-formats = ["deflate", "gzip", "bgzf"]
+
+# Serialization formats
+bitcode = ["dep:bitcode"]
+
+# All features
+all = ["all-formats", "bitcode"]
